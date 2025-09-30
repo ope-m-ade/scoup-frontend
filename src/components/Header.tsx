@@ -2,7 +2,11 @@ import { Database, Menu, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 
-export function Header() {
+interface HeaderProps {
+  onFacultyLogin?: () => void;
+}
+
+export function Header({ onFacultyLogin }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -17,26 +21,12 @@ export function Header() {
             <span className="text-xl">SCOUP</span>
           </div>
 
-          {/* Desktop Navigation */}
-          {/* <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
-              Features
-            </a>
-            <a href="#demo" className="text-muted-foreground hover:text-foreground transition-colors">
-              Demo
-            </a>
-            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-              Pricing
-            </a>
-            <a href="#docs" className="text-muted-foreground hover:text-foreground transition-colors">
-              Documentation
-            </a>
-          </nav> */}
-
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
             {/* <Button variant="ghost">Sign in</Button> */}
-            <Button variant="ghost">Faculty</Button>
+            <Button variant="ghost" onClick={onFacultyLogin}>
+              Faculty
+            </Button>
             <Button variant="ghost">Administrator </Button>
           </div>
 
