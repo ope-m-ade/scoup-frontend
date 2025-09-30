@@ -86,11 +86,12 @@ export function Hero() {
             </div> */}
 
             <Button className="absolute right-2 top-1/2 transform -translate-y-1/2">
-              <Zap className="w-4 h-4 mr-2" />
+              {/* <Zap className="w-4 h-4 mr-2" /> */}
               Search
             </Button>
           </div>
 
+          {/* To be updated to reflect AI Suggested searches. I don't know if this may be needed or not or it could be dummy examples*/}
           <div className="flex flex-wrap justify-center gap-2 mt-4">
             {[
               "cybersecurity research",
