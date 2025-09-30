@@ -24,16 +24,21 @@ export function Hero() {
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full mb-6">
             <Database className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Salisbury University Knowledge Platform</span>
+            <span className="text-sm text-muted-foreground"></span>
           </div>
-          
+
           <h1 className="text-4xl md:text-6xl mb-6 bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent">
-            Connect with SU's intellectual capital
+            Salisbury University-Industry Connection and Unified Platform
+            (SCOUP)
           </h1>
-          
+
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
-            Discover faculty expertise, ongoing research projects, and collaboration opportunities at Salisbury University. 
-            Our AI breaks down information silos to foster meaningful partnerships.
+            Salisbury University’s gateway to discovery and collaboration.
+            Powered by AI, it connects faculty expertise, ongoing research, and
+            emerging projects to the people who need them most. By breaking down
+            information silos, SCOUP fosters meaningful partnerships within SU
+            and with external partners, turning knowledge into real-world
+            impact.
           </p>
         </div>
 
@@ -48,14 +53,20 @@ export function Hero() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-12 pr-48 py-4 text-lg bg-card/50 backdrop-blur-sm border-border/50"
             />
-            
-            {/* Filter Dropdown */}
+
+            {/* Filter Dropdown
             <div className="absolute right-24 top-1/2 transform -translate-y-1/2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 bg-card/80 backdrop-blur-sm border-border/50">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 bg-card/80 backdrop-blur-sm border-border/50"
+                  >
                     {getSelectedFilter().icon}
-                    <span className="ml-1 mr-1 text-xs">{getSelectedFilter().label}</span>
+                    <span className="ml-1 mr-1 text-xs">
+                      {getSelectedFilter().label}
+                    </span>
                     <ChevronDown className="w-3 h-3" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -72,16 +83,21 @@ export function Hero() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
+            </div> */}
 
             <Button className="absolute right-2 top-1/2 transform -translate-y-1/2">
               <Zap className="w-4 h-4 mr-2" />
               Search
             </Button>
           </div>
-          
+
           <div className="flex flex-wrap justify-center gap-2 mt-4">
-            {["cybersecurity research", "environmental patents", "AI projects", "business analytics papers"].map((suggestion) => (
+            {[
+              "cybersecurity research",
+              "environmental patents",
+              "AI projects",
+              "business analytics papers",
+            ].map((suggestion) => (
               <button
                 key={suggestion}
                 onClick={() => setSearchQuery(suggestion)}
@@ -101,7 +117,9 @@ export function Hero() {
           </div>
           <div className="text-center">
             <div className="text-3xl mb-2">200+</div>
-            <div className="text-muted-foreground">Active Research Projects</div>
+            <div className="text-muted-foreground">
+              Active Research Projects
+            </div>
           </div>
           <div className="text-center">
             <div className="text-3xl mb-2">50+</div>
