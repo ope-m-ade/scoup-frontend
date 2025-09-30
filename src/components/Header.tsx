@@ -70,13 +70,10 @@ export function Header({ onFacultyLogin }: HeaderProps) {
                 Documentation
               </a> */}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-                <Button variant="ghost" className="justify-start">
-                  Sign in
+                <Button onClick={onFacultyLogin}>
+                  Faculty Sign In
                 </Button>
-                <Button className="justify-start">
-                  <Search className="w-4 h-4 mr-2" />
-                  Try for free
-                </Button>
+                <Button>Administrato Sign In</Button>
               </div>
             </nav>
           </div>

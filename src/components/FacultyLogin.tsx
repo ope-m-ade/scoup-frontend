@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Separator } from "./ui/separator";
 import { Eye, EyeOff, Lock, Mail, University, ArrowLeft } from "lucide-react";
+import { facultyUsers, adminUsers, User } from "../mockusers";
 
 interface FacultyLoginProps {
   onBack?: () => void;
@@ -29,12 +30,17 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
     try {
       // Mock authentication - replace with real authentication
       await new Promise(resolve => setTimeout(resolve, 1000));
+      const matchedUser = facultyUsers.find(
+        (user) =>
+          user.email.toLowerCase() === formData.email.toLowerCase() &&
+          user.password === formData.password
+      );
       
-      if (formData.email && formData.password) {
-        console.log("Login attempt:", formData);
+      if (matchedUser) {
+         console.log("Login successful for:", matchedUser.name);
         // Handle successful login here
       } else {
-        setError("Please fill in all fields");
+        setError("Invalid email or password.");
       }
     } catch (err) {
       setError("Login failed. Please try again.");
