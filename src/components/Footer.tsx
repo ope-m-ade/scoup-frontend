@@ -31,16 +31,16 @@ export function Footer() {
           </div>
 
           {/* Product */}
-          <div>
-            <h4 className="mb-4">Product</h4>
+          {/* <div>
+            <h4 className="mb-4">Home</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">Features</a></li>
+              <li><a href="#" className="hover:text-foreground transition-colors">Featu</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">Pricing</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">Integrations</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">API</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">Changelog</a></li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Resources */}
           <div>
@@ -48,20 +48,15 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><a href="#" className="hover:text-foreground transition-colors">Documentation</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">Tutorials</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Case Studies</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Support</a></li>
             </ul>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="mb-4">Company</h4>
+            <h4 className="mb-4">About</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">About</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Privacy</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Terms</a></li>
+              <li><a href="#" className="hover:text-foreground transition-colors">SCOUP Overview</a></li>
+              <li><a href="#" className="hover:text-foreground transition-colors">GitHub</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">Contact</a></li>
             </ul>
           </div>
@@ -69,7 +64,7 @@ export function Footer() {
 
         <div className="border-t border-border/50 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2024 Salisbury University. All rights reserved.
+            © 2025 SCOUP Team. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
