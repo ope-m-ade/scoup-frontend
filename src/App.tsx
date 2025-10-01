@@ -30,7 +30,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header onFacultyLogin={handleFacultyLogin} />
+      <Header
+        onFacultyLogin={handleFacultyLogin}
+      />
       <main>
         {showSearchDemo ? (
           <SearchDemo onBack={() => setShowSearchDemo(false)} />

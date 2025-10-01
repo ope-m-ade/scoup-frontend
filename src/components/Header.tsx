@@ -6,7 +6,7 @@ interface HeaderProps {
   onFacultyLogin?: () => void;
 }
 
-export function Header({ onFacultyLogin }: HeaderProps) {
+export function Header({ onFacultyLogin}: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
