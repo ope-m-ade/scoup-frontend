@@ -4,7 +4,11 @@ import { Input } from "./ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useState } from "react";
 
-export function Hero() {
+interface HeroProps {
+  onSearchDemo?: () => void;
+}
+
+export function Hero({ onSearchDemo }: HeroProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFilter, setSearchFilter] = useState("all");
 
@@ -85,7 +89,7 @@ export function Hero() {
               </DropdownMenu>
             </div> */}
 
-            <Button className="absolute right-2 top-1/2 transform -translate-y-1/2">
+            <Button className="absolute right-2 top-1/2 transform -translate-y-1/2" onClick={onSearchDemo}>
               {/* <Zap className="w-4 h-4 mr-2" /> */}
               Search
             </Button>

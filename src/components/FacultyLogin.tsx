@@ -28,7 +28,6 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
 
     // Simulate login process
     try {
-      // Mock authentication - replace with real authentication
       await new Promise(resolve => setTimeout(resolve, 1000));
       const matchedUser = facultyUsers.find(
         (user) =>
@@ -60,20 +59,22 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center space-x-2">
-            <h1><strong>SCOUP</strong></h1>
+            <h1>
+              <strong>SCOUP</strong>
+            </h1>
           </div>
           <p className="text-muted-foreground">Faculty Portal Access</p>
         </div>
 
         {/* Login Card */}
-        <Card className="border-border/50 shadow-lg">
-          <CardHeader className="space-y-1">
+        <Card className="border-border/50 shadow-lg w-full max-w-md mx-auto">
+          <CardHeader className="w-full max-w-sm">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl">Welcome Back</CardTitle>
               {onBack && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={onBack}
                   className="h-8 w-8 p-0"
                 >
@@ -85,7 +86,7 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
               Sign in to access your faculty dashboard and collaboration tools
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
@@ -103,10 +104,10 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
                     placeholder="your.email@salisbury.edu"
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
-                    className="pl-10"
+                    className="pl-12"
                     required
                   />
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 </div>
               </div>
 
@@ -118,11 +119,13 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
-                    className="pl-10 pr-10"
+                    onChange={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
+                    className="pl-12"
                     required
                   />
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Button
                     type="button"
                     variant="ghost"
@@ -130,11 +133,11 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    {/* {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-muted-foreground" />
                     ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
+                      <Eye className="h-5 w-5 text-muted-foreground" />
+                    )} */}
                   </Button>
                 </div>
               </div>
@@ -149,11 +152,7 @@ export function FacultyLogin({ onBack }: FacultyLoginProps) {
                 </Button>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isLoading}
-              >
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
