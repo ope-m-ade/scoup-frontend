@@ -1,7 +1,7 @@
 
   # Search Database Landing Page
 
-  This is a code bundle for Search Database Landing Page. The original project is available at https://www.figma.com/design/rlpXrXJa0WsPNQvPgO6de7/Search-Database-Landing-Page.
+  This is a code bundle for Search Database Landing Page. The sample deployment is at https://scoup-frontend.vercel.app/
 
   ## Running the code
 
