@@ -1,6 +1,9 @@
 import { Database, Github, Twitter, Linkedin } from "lucide-react";
 
-export function Footer() {
+interface FooterProps {
+  onAboutClick?: () => void;
+}
+export function Footer({onAboutClick }: FooterProps) {
   return (
     <footer className="bg-secondary/20 border-t border-border/50">
       <div className="max-w-6xl mx-auto px-4 py-16">
@@ -14,17 +17,27 @@ export function Footer() {
               <span className="text-xl">SCOUP</span>
             </div>
             <p className="text-muted-foreground text-sm">
-              Salisbury University's centralized knowledge and collaboration platform. 
-              Connecting internal expertise with external opportunities to drive innovation.
+              Salisbury University's centralized knowledge and collaboration
+              platform. Connecting internal expertise with external
+              opportunities to drive innovation.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
@@ -46,8 +59,16 @@ export function Footer() {
           <div>
             <h4 className="mb-4">Resources</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Tutorials</a></li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors">
+                  Documentation
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors">
+                  Tutorials
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -55,9 +76,25 @@ export function Footer() {
           <div>
             <h4 className="mb-4">About</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">SCOUP Overview</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">GitHub</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">Contact</a></li>
+              <li>
+                <a
+                  href="#"
+                  onClick={onAboutClick}
+                   className="hover:text-foreground transition-colors"
+                >
+                  SCOUP Overview
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-foreground transition-colors">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -67,9 +104,15 @@ export function Footer() {
             © 2025 SCOUP Team. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-foreground transition-colors">Cookie Policy</a>
+            <a href="#" className="hover:text-foreground transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-foreground transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-foreground transition-colors">
+              Cookie Policy
+            </a>
           </div>
         </div>
       </div>
