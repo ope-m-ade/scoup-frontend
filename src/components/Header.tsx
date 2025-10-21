@@ -29,7 +29,7 @@ export function Header({ onFacultyLogin, onAdminLogin, onAboutClick }: HeaderPro
             target="_blank"
           >
             <img
-              src="images/Salisbury_University_logo.svg.png"
+              src="src/components/images/Salisbury_University_logo.svg.png"
               alt="SCOUP Logo"
               className="h-10 w-auto object-contain"
             />
@@ -45,7 +45,9 @@ export function Header({ onFacultyLogin, onAdminLogin, onAboutClick }: HeaderPro
             <Button variant="ghost" onClick={onFacultyLogin}>
               Faculty
             </Button>
-            <Button variant="ghost" onClick={onAdminLogin}>Administrator </Button>
+            <Button variant="ghost" onClick={onAdminLogin}>
+              Administrator{" "}
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
