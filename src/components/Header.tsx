@@ -3,10 +3,12 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 
 interface HeaderProps {
+  onAboutClick?: () => void;
   onFacultyLogin?: () => void;
+  onAdminLogin?: () => void;
 }
 
-export function Header({ onFacultyLogin}: HeaderProps) {
+export function Header({ onFacultyLogin, onAdminLogin, onAboutClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -14,12 +16,28 @@ export function Header({ onFacultyLogin}: HeaderProps) {
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Database className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl">SCOUP</span>
-          </div>
+          </div> */}
+
+          <a
+            href="https://www.salisbury.edu/"
+            className="flex items-center gap-2"
+            target="_blank"
+          >
+            <img
+              src="images/Salisbury_University_logo.png"
+              alt="SCOUP Logo"
+              className="h-10 w-auto object-contain"
+            />
+          </a>
+
+          <a href="#" onClick={onAboutClick} className="hover:text-primary">
+            About SCOUP
+          </a>
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
@@ -27,7 +45,9 @@ export function Header({ onFacultyLogin}: HeaderProps) {
             <Button variant="ghost" onClick={onFacultyLogin}>
               Faculty
             </Button>
-            <Button variant="ghost">Administrator </Button>
+            <Button variant="ghost" onClick={onAdminLogin}>
+              Administrator{" "}
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -70,9 +90,7 @@ export function Header({ onFacultyLogin}: HeaderProps) {
                 Documentation
               </a> */}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-                <Button onClick={onFacultyLogin}>
-                  Faculty Sign In
-                </Button>
+                <Button onClick={onFacultyLogin}>Faculty Sign In</Button>
                 <Button>Administrato Sign In</Button>
               </div>
             </nav>

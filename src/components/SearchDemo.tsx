@@ -152,13 +152,12 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
   return (
     <section className="py-24 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="flex flex-col gap-12 items-center">
           {/* Demo Interface */}
           <div>
-            <h2 className="text-3xl md:text-4xl mb-6">See it in action</h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Search through SU's research papers, patents, active projects, and
-              faculty expertise with intelligent keyword matching.
+            {/* <h2 className="text-3xl md:text-4xl mb-6">See it in action</h2> */}
+            <p className="text-3xl md:text-4xl mb-6">
+              Search through SU's expertise with intelligent keyword matching.
             </p>
 
             {/* Search Interface */}
@@ -173,7 +172,7 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
                   className="pl-12 pr-36 py-3 bg-card border-border"
                 />
 
-                {/* Filter Dropdown in Search */}
+                {/* Filter Dropdown in Search
                 <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -213,7 +212,7 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
                       ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </div>
+                </div> */}
               </div>
 
               <div className="flex flex-wrap gap-2">
@@ -230,7 +229,7 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
                 ))}
               </div>
 
-              {/* Filters */}
+              {/* Filters
               <div className="flex gap-2 flex-wrap">
                 <Badge variant="secondary" className="gap-1">
                   <Calendar className="w-3 h-3" />
@@ -244,13 +243,13 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
                   <Users className="w-3 h-3" />
                   Collaboration ready
                 </Badge>
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Results Preview with Tabs */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between mb-4">
+            {/* <div className="flex items-center justify-between mb-4">
               <div className="text-sm text-muted-foreground">
                 Found {getFilteredResults(activeTab).length} results in 47ms
               </div>
@@ -258,7 +257,7 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
                 <Filter className="w-4 h-4 mr-2" />
                 Filters
               </Button>
-            </div>
+            </div> */}
 
             <Tabs
               value={activeTab}
