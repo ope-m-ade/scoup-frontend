@@ -29,7 +29,7 @@ export function Header({ onFacultyLogin, onAdminLogin, onAboutClick }: HeaderPro
             target="_blank"
           >
             <img
-              src="public/images/Salisbury_University_logo.svg.png"
+              src="public/images/Salisbury_University_logo.png"
               alt="SCOUP Logo"
               className="h-10 w-auto object-contain"
             />
