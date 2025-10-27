@@ -1,17 +1,42 @@
 import { useState } from "react";
-import { Search, Filter, Calendar, User, Building, Lightbulb, BookOpen, Users, Mail, Phone, FileText, Award, Layers, ChevronDown, Database } from "lucide-react";
+import {
+  Search,
+  Filter,
+  Calendar,
+  User,
+  Building,
+  Lightbulb,
+  BookOpen,
+  Users,
+  Mail,
+  Phone,
+  FileText,
+  Award,
+  Layers,
+  ChevronDown,
+  Database,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
+import { facultyData } from "../data/faculty";
+// import { projectsData } from "../data/projects";
+// import { papersData } from "../data/papers";
+// import { patentsData } from "../data/patents";
 
- interface SearchDemoProps {
-   onBack?: () => void;
- }
+interface SearchDemoProps {
+  onBack?: () => void;
+}
 
 export function SearchDemo({ onBack }: SearchDemoProps) {
   const [activeQuery, setActiveQuery] = useState(
@@ -45,96 +70,10 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
     filterOptions[0];
 
   const allResults = [
-    {
-      id: 1,
-      type: "Faculty Expert",
-      title: "Dr. Sarah Chen, Computer Science",
-      description:
-        "Specializes in cybersecurity, machine learning applications for threat detection, and privacy-preserving analytics",
-      metadata: {
-        department: "Computer Science",
-        experience: "12 years",
-        projects: "8 active",
-        availability: "Available",
-      },
-      icon: <User className="w-4 h-4" />,
-      category: "experts",
-    },
-    {
-      id: 2,
-      type: "Research Paper",
-      title: "Privacy-Preserving Analytics in Smart City Infrastructure",
-      description:
-        "Published study on implementing differential privacy techniques for municipal data analysis while maintaining utility",
-      metadata: {
-        published: "2024",
-        citations: "23",
-        journal: "IEEE Security",
-        impact: "8.2",
-      },
-      icon: <FileText className="w-4 h-4" />,
-      category: "papers",
-    },
-    {
-      id: 3,
-      type: "Research Project",
-      title: "Smart City Security Infrastructure",
-      description:
-        "NSF-funded project developing AI-powered cybersecurity solutions for municipal systems",
-      metadata: {
-        funding: "$450K",
-        duration: "2 years",
-        collaborators: "3 departments",
-        status: "Active",
-      },
-      icon: <Lightbulb className="w-4 h-4" />,
-      category: "projects",
-    },
-    {
-      id: 4,
-      type: "Patent Application",
-      title: "Distributed Anomaly Detection System for IoT Networks",
-      description:
-        "Novel approach to real-time threat detection in smart city sensor networks using federated learning",
-      metadata: {
-        filed: "2023",
-        inventor: "Chen, S. et al.",
-        status: "Pending",
-        classification: "H04L",
-      },
-      icon: <Award className="w-4 h-4" />,
-      category: "patents",
-    },
-    {
-      id: 5,
-      type: "Research Paper",
-      title: "Machine Learning for Cybersecurity: A Comprehensive Survey",
-      description:
-        "Systematic review of ML applications in cybersecurity with focus on industrial implementations",
-      metadata: {
-        published: "2023",
-        citations: "156",
-        journal: "ACM Computing Surveys",
-        impact: "9.1",
-      },
-      icon: <FileText className="w-4 h-4" />,
-      category: "papers",
-    },
-    {
-      id: 6,
-      type: "Research Project",
-      title: "Data Analytics for Environmental Monitoring",
-      description:
-        "Collaborative project using sensor networks and ML for real-time environmental data analysis",
-      metadata: {
-        funding: "$320K",
-        duration: "18 months",
-        collaborators: "2 departments",
-        status: "Active",
-      },
-      icon: <Lightbulb className="w-4 h-4" />,
-      category: "projects",
-    },
+    ...facultyData,
+    // ...projectsData,
+    // ...papersData,
+    // ...patentsData,
   ];
 
   const getFilteredResults = (category: string) => {
@@ -284,62 +223,113 @@ export function SearchDemo({ onBack }: SearchDemoProps) {
 
               <TabsContent value={activeTab} className="mt-4">
                 <div className="space-y-3">
-                  {getFilteredResults(activeTab).map((result) => (
-                    <Card
-                      key={result.id}
-                      className="border-border/50 hover:border-border transition-colors cursor-pointer"
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-2">
-                            {result.icon}
-                            <Badge variant="outline" className="text-xs">
-                              {result.type}
-                            </Badge>
-                          </div>
-                        </div>
-                        <CardTitle className="text-lg">
-                          {result.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <p className="text-sm text-muted-foreground mb-3">
-                          {result.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            {Object.entries(result.metadata).map(
-                              ([key, value]) => (
-                                <span
-                                  key={key}
-                                  className="bg-secondary/50 px-2 py-1 rounded"
-                                >
-                                  {key}: {value}
-                                </span>
-                              )
+                  {getFilteredResults(activeTab)
+                    .filter(
+                      (result) =>
+                        // Check AI keywords, Faculty keywords, or name for the search query
+                        activeQuery === "" ||
+                        result.aiKeywords?.some((kw) =>
+                          kw.toLowerCase().includes(activeQuery.toLowerCase())
+                        ) ||
+                        result.facultyKeywords?.some((kw) =>
+                          kw.toLowerCase().includes(activeQuery.toLowerCase())
+                        ) ||
+                        result.name
+                          .toLowerCase()
+                          .includes(activeQuery.toLowerCase())
+                    )
+                    .map((result) => (
+                      <Card
+                        key={result.id}
+                        className="border border-border/50 hover:border-border transition-colors cursor-pointer p-6"
+                      >
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {/* Column 1: Keywords */}
+                          <div className="space-y-4">
+                            {result.aiKeywords && (
+                              <div>
+                                <h4 className="font-semibold text-sm mb-1">
+                                  AI-matched keywords
+                                </h4>
+                                <div className="flex flex-wrap gap-2">
+                                  {result.aiKeywords.map((kw) => (
+                                    <Badge key={kw} variant="secondary">
+                                      {kw}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {result.facultyKeywords && (
+                              <div>
+                                <h4 className="font-semibold text-sm mb-1">
+                                  Faculty-generated keywords
+                                </h4>
+                                <div className="flex flex-wrap gap-2">
+                                  {result.facultyKeywords.map((kw) => (
+                                    <Badge key={kw} variant="outline">
+                                      {kw}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
                             )}
                           </div>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-7 text-xs"
-                          >
-                            {result.category === "experts" ? (
-                              <>
+
+                          {/* Column 2: Photo */}
+                          <div className="flex justify-center items-start">
+                            <img
+                              src={
+                                result.photo || "/images/default-profile.jpg"
+                              }
+                              alt={result.name}
+                              className="rounded-lg w-40 h-40 object-cover border border-border/40"
+                            />
+                          </div>
+
+                          {/* Column 3: Contact Info */}
+                          <div className="space-y-2 text-sm">
+                            <p className="font-semibold text-lg">
+                              {result.name}
+                            </p>
+                            {result.department && (
+                              <p className="text-muted-foreground">
+                                {result.title}, {result.department}
+                              </p>
+                            )}
+                            {result.office && (
+                              <p>
+                                <span className="font-medium">Office:</span>{" "}
+                                {result.office}
+                              </p>
+                            )}
+                            {result.phone && (
+                              <p>
+                                <span className="font-medium">Phone:</span>{" "}
+                                {result.phone}
+                              </p>
+                            )}
+                            {result.email && (
+                              <p>
+                                <span className="font-medium">Email:</span>{" "}
+                                {result.email}
+                              </p>
+                            )}
+
+                            <div className="pt-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-7 text-xs"
+                              >
                                 <Mail className="w-3 h-3 mr-1" />
                                 Connect
-                              </>
-                            ) : (
-                              <>
-                                <BookOpen className="w-3 h-3 mr-1" />
-                                View
-                              </>
-                            )}
-                          </Button>
+                              </Button>
+                            </div>
+                          </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                      </Card>
+                    ))}
                 </div>
               </TabsContent>
             </Tabs>
