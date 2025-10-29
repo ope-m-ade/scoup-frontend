@@ -12,7 +12,8 @@ import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Separator } from "./ui/separator";
 import { Eye, EyeOff, Lock, Mail, University, ArrowLeft } from "lucide-react";
-import { facultyUsers, adminUsers, User } from "../mockusers";
+import { adminUsers, User } from "../mockusers";
+import { AdminDashboard } from "./AdminDashboard";
 
 interface AdminLoginProps {
   onBack?: () => void;
@@ -26,6 +27,20 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loggedInAdmin, setLoggedInAdmin] = useState<User | null>(null);
+
+  if (loggedInAdmin) {
+    return (
+      <AdminDashboard
+        adminName={loggedInAdmin.name}
+        onLogout={() => {
+          setLoggedInAdmin(null);
+          setFormData({ email: "", password: "" });
+        }}
+        onBackToHome={onBack}
+      />
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,15 +50,14 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
     // Simulate login process
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const matchedUser = facultyUsers.find(
+      const matchedUser = adminUsers.find(
         (user) =>
           user.email.toLowerCase() === formData.email.toLowerCase() &&
           user.password === formData.password
       );
 
       if (matchedUser) {
-        console.log("Login successful for:", matchedUser.name);
-        // Handle successful login here
+        setLoggedInAdmin(matchedUser);
       } else {
         setError("Invalid email or password.");
       }
@@ -138,12 +152,13 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                   >
-                    {/* {showPassword ? (
+                    {showPassword ? (
                       <EyeOff className="h-5 w-5 text-muted-foreground" />
                     ) : (
                       <Eye className="h-5 w-5 text-muted-foreground" />
-                    )} */}
+                    )}
                   </Button>
                 </div>
               </div>
