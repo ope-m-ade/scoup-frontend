@@ -77,7 +77,10 @@ export function AdminDashboard({
               {adminName ? `Welcome, ${adminName}` : "Administrator"}
             </p>
           </div>
-          <nav className="flex-1 px-4 py-6 space-y-2 text-sm">
+          <nav
+            className="flex-1 px-4 py-6 space-y-2 text-sm"
+            aria-label="Admin dashboard sections"
+          >
             {navigationLinks.map((link) => (
               <a
                 key={link.label}
