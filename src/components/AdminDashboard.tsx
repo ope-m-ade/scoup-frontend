@@ -19,6 +19,7 @@ import {
   Users2,
   UserCog,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface AdminDashboardProps {
   adminName?: string;
@@ -26,31 +27,20 @@ interface AdminDashboardProps {
   onBackToHome?: () => void;
 }
 
-const navigationLinks = [
-codex/implement-changes-in-aarti-scoup-repository-xj4692
+type NavigationLink = {
+  label: string;
+  icon: LucideIcon;
+  href: string;
+};
+
+const navigationLinks: NavigationLink[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "#dashboard" },
   { label: "Approvals", icon: CheckCircle2, href: "#approvals" },
   { label: "Faculty", icon: Users2, href: "#faculty" },
-  {
-    label: "Specializations",
-    icon: GraduationCap,
-    href: "#specializations",
-  },
-  {
-    label: "Publications & Projects",
-    icon: BookOpen,
-    href: "#publications",
-  },
+  { label: "Specializations", icon: GraduationCap, href: "#specializations" },
+  { label: "Publications & Projects", icon: BookOpen, href: "#publications" },
   { label: "Users & Roles", icon: UserCog, href: "#users" },
   { label: "Settings", icon: Settings, href: "#settings" },
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Approvals", icon: CheckCircle2 },
-  { label: "Faculty", icon: Users2 },
-  { label: "Specializations", icon: GraduationCap },
-  { label: "Publications and Projects", icon: BookOpen },
-  { label: "Users and roles", icon: UserCog },
-  { label: "Settings", icon: Settings },
-        Aarti
 ];
 
 const statHighlights = [
@@ -79,62 +69,54 @@ export function AdminDashboard({
   return (
     <div className="min-h-screen bg-slate-100">
       <div className="flex min-h-screen">
-        <aside className="w-64 bg-black text-white flex flex-col shadow-2xl">
-          <div className="p-6 border-b border-purple-500/60">
+        <aside className="flex w-64 flex-col bg-black text-white shadow-2xl">
+          <div className="border-b border-purple-500/60 p-6">
             <h2 className="text-xl font-semibold">Admin Panel</h2>
             <p className="mt-1 text-sm text-gray-300">
               {adminName ? `Welcome, ${adminName}` : "Administrator"}
             </p>
           </div>
-codex/implement-changes-in-aarti-scoup-repository-xj4692
+
           <nav
-            className="flex-1 px-4 py-6 space-y-2 text-sm"
+            className="flex-1 space-y-2 px-4 py-6 text-sm"
             aria-label="Admin dashboard sections"
           >
-            {navigationLinks.map((link) => (
+            {navigationLinks.map(({ label, icon: Icon, href }) => (
               <a
-                key={link.label}
-                href={link.href}
-                className="flex items-center justify-between rounded-md px-3 py-2 transition hover:bg-purple-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-400"
-                >
-          <nav className="flex-1 px-4 py-6 space-y-2 text-sm">
-            {navigationLinks.map((link) => (
-              <a
-                key={link.label}
-                href="#"
+                key={label}
+                href={href}
                 className="flex items-center justify-between rounded-md px-3 py-2 transition hover:bg-purple-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-400"
               >
- Aarti
                 <span className="flex items-center gap-3">
-                  <link.icon className="h-4 w-4 text-purple-300" />
-                  {link.label}
+                  <Icon className="h-4 w-4 text-purple-300" />
+                  {label}
                 </span>
                 <ChevronRight className="h-4 w-4 text-purple-300" />
               </a>
             ))}
           </nav>
+
           <Separator className="bg-purple-500/40" />
+
           <div className="p-4">
             {onLogout && (
               <Button
                 onClick={onLogout}
                 variant="secondary"
-                className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+                className="w-full bg-purple-500 text-white hover:bg-purple-600"
               >
-                <LogOut className="mr-2 h-4 w-4" /> Logout
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
               </Button>
             )}
           </div>
         </aside>
 
-        <main className="flex-1 p-8 space-y-6">
- codex/implement-changes-in-aarti-scoup-repository-xj4692
-          <div
+        <main className="flex-1 space-y-6 p-8">
+          <header
             id="dashboard"
             className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
           >
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
- Aarti
             <div>
               <h1 className="text-3xl font-semibold text-gray-900">
                 Admin Dashboard
@@ -143,24 +125,25 @@ codex/implement-changes-in-aarti-scoup-repository-xj4692
                 Overview of your faculty network and publication activity.
               </p>
             </div>
-            <div className="flex gap-2">
-              {onBackToHome && (
+            {onBackToHome && (
+              <div className="flex gap-2">
                 <Button
                   variant="outline"
                   onClick={onBackToHome}
                   className="flex items-center gap-2"
                 >
-                  <ArrowLeft className="h-4 w-4" /> Homepage
+                  <ArrowLeft className="h-4 w-4" />
+                  Homepage
                 </Button>
-              )}
-            </div>
-          </div>
+              </div>
+            )}
+          </header>
 
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {statHighlights.map((stat) => (
               <Card key={stat.label} className="border-purple-200 shadow-sm">
                 <CardHeader className="pb-2">
-                  <CardDescription className="uppercase tracking-wide text-xs text-gray-500">
+                  <CardDescription className="text-xs uppercase tracking-wide text-gray-500">
                     {stat.label}
                   </CardDescription>
                   <CardTitle className="text-3xl font-semibold text-gray-900">
@@ -171,17 +154,14 @@ codex/implement-changes-in-aarti-scoup-repository-xj4692
             ))}
           </section>
 
- codex/implement-changes-in-aarti-scoup-repository-xj4692
           <section
             id="approvals"
             className="grid gap-6 lg:grid-cols-2"
+            aria-labelledby="approvals-heading"
           >
-            <Card className="border-purple-200 shadow-sm" id="activity">
-          <section className="grid gap-6 lg:grid-cols-2">
-            <Card className="border-purple-200 shadow-sm">
-Aarti
+            <Card className="border-purple-200 shadow-sm" aria-labelledby="activity-heading">
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle id="activity-heading">Recent Activity</CardTitle>
                 <CardDescription>
                   Updates from your faculty and research community.
                 </CardDescription>
@@ -200,9 +180,9 @@ Aarti
               </CardContent>
             </Card>
 
-            <Card className="border-purple-200 shadow-sm">
+            <Card className="border-purple-200 shadow-sm" aria-labelledby="pending-heading">
               <CardHeader>
-                <CardTitle>Pending Approvals</CardTitle>
+                <CardTitle id="pending-heading">Pending Approvals</CardTitle>
                 <CardDescription>
                   Review requests awaiting administrator action.
                 </CardDescription>
@@ -221,15 +201,15 @@ Aarti
               </CardContent>
             </Card>
           </section>
-codex/implement-changes-in-aarti-scoup-repository-xj4692
 
           <section
             id="faculty"
             className="grid gap-6 lg:grid-cols-2"
+            aria-labelledby="faculty-heading"
           >
             <Card className="border-purple-200 shadow-sm">
               <CardHeader>
-                <CardTitle>Faculty Directory</CardTitle>
+                <CardTitle id="faculty-heading">Faculty Directory</CardTitle>
                 <CardDescription>
                   Quick access to prominent faculty members and teams.
                 </CardDescription>
@@ -289,10 +269,11 @@ codex/implement-changes-in-aarti-scoup-repository-xj4692
           <section
             id="publications"
             className="grid gap-6 lg:grid-cols-2"
+            aria-labelledby="publications-heading"
           >
             <Card className="border-purple-200 shadow-sm">
               <CardHeader>
-                <CardTitle>Publications</CardTitle>
+                <CardTitle id="publications-heading">Publications</CardTitle>
                 <CardDescription>
                   Track recent submissions and highlight featured work.
                 </CardDescription>
@@ -349,10 +330,10 @@ codex/implement-changes-in-aarti-scoup-repository-xj4692
             </Card>
           </section>
 
-          <section id="settings">
+          <section id="settings" aria-labelledby="settings-heading">
             <Card className="border-purple-200 shadow-sm">
               <CardHeader>
-                <CardTitle>Administrator Settings</CardTitle>
+                <CardTitle id="settings-heading">Administrator Settings</CardTitle>
                 <CardDescription>
                   Configure notification preferences and security controls.
                 </CardDescription>
@@ -379,7 +360,6 @@ codex/implement-changes-in-aarti-scoup-repository-xj4692
               </CardContent>
             </Card>
           </section>
-Aarti
         </main>
       </div>
     </div>

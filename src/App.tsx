@@ -1,91 +1,44 @@
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
-// import { Features } from "./components/Features";
 import { SearchPage } from "./components/SearchPage";
-// import { CTA } from "./components/CTA";
 import { Footer } from "./components/Footer";
-import { useState } from "react";
 import { FacultyLogin } from "./components/FacultyLogin";
 import { AdminLogin } from "./components/AdminLogin";
 import { About } from "./components/About";
+import { AdminDashboard } from "./components/AdminDashboard";
 
-export default function App() {
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [showFacultyLogin, setShowFacultyLogin] = useState(false);
-  const [showSearchDemo, setShowSearchDemo] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleFacultyLogin = () => {
-    setShowFacultyLogin(true);
-  };
-
-  const handleAdminLogin = () => {
-    setShowAdminLogin(true);
-  };
-
-  const handleBackToMain = () => {
-    setShowFacultyLogin(false);
-    setShowSearchDemo(false);
-    setShowAdminLogin(false);
-    setShowAbout(false);
-  };
-
-  if (showFacultyLogin) {
-    return <FacultyLogin onBack={handleBackToMain} />;
-  }
-
-  if (showSearchDemo) {
-    return (
-      <SearchPage
-        onBack={handleBackToMain}
-        initialQuery={searchTerm}
-      />
-    );
-  }
-  if (showAdminLogin) {
-    return <AdminLogin onBack={handleBackToMain} />;
-  }
-
-  if (showAbout) {
-    return (
-      <About
-        onHome={() => {
-          setShowAbout(false); // Go back to landing page
-        }}
-        onFacultyLogin={handleFacultyLogin}
-        onAdminLogin={() => console.log("Admin login clicked")}
-      />
-    );
-  }
+function LandingPage() {
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background">
       <Header
-        onAboutClick={() => setShowAbout(true)}
-        onFacultyLogin={handleFacultyLogin}
-        onAdminLogin={handleAdminLogin}
+        onAboutClick={() => navigate("/about")}
+        onFacultyLogin={() => navigate("/faculty-login")}
+        onAdminLogin={() => navigate("/admin-login")}
       />
       <main>
-        {showSearchDemo ? (
-          <SearchPage
-            onBack={() => setShowSearchDemo(false)}
-            initialQuery={searchTerm}
-          />
-        ) : (
-          <Hero
-            onSearchDemo={() => setShowSearchDemo(true)}
-            onSearch={(term: string) => {
-              setSearchTerm(term); // save home page input
-              setShowSearchDemo(true); // navigate to search page
-            }}
-          />
-        )}
-        {/* <Features /> */}
-        {/* <SearchPage /> */}
-        {/* <CTA onFacultyLogin={handleFacultyLogin} /> */}
+        <Hero
+          onSearchDemo={() => navigate("/search")}
+          onSearch={(term: string) => navigate(`/search?query=${term}`)}
+        />
       </main>
-      <Footer onAboutClick={() => setShowAbout(true)} />
+      <Footer onAboutClick={() => navigate("/about")} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/faculty-login" element={<FacultyLogin />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/about" element={<About />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
