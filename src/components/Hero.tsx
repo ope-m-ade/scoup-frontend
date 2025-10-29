@@ -20,10 +20,11 @@ import {
 import { useState } from "react";
 
 interface HeroProps {
-  onSearchDemo?: () => void;
+  onSearchDemo: () => void;
+  onSearch: (term: string) => void;
 }
 
-export function Hero({ onSearchDemo }: HeroProps) {
+export function Hero({ onSearchDemo, onSearch }: HeroProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFilter, setSearchFilter] = useState("all");
 
@@ -50,6 +51,15 @@ export function Hero({ onSearchDemo }: HeroProps) {
   const getSelectedFilter = () =>
     filterOptions.find((option) => option.value === searchFilter) ||
     filterOptions[0];
+
+  const submitSearch = () => {
+    const trimmedQuery = searchQuery.trim();
+    if (!trimmedQuery) {
+      return;
+    }
+    onSearch(trimmedQuery);
+    onSearchDemo();
+  };
 
   return (
     <section className="relative bg-gradient-to-br from-background via-secondary/20 to-accent/30 min-h-screen py-32 px-4 flex items-center justify-center">
@@ -106,6 +116,11 @@ export function Hero({ onSearchDemo }: HeroProps) {
               placeholder="Search faculty expertise, research papers, patents, projects..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  submitSearch();
+                }
+              }}
               className="pl-12 pr-48 py-4 text-lg bg-card/50 backdrop-blur-sm border-border/50"
             />
 
@@ -142,7 +157,7 @@ export function Hero({ onSearchDemo }: HeroProps) {
 
             <Button
               className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              onClick={onSearchDemo}
+              onClick={submitSearch}
             >
               {/* <Zap className="w-4 h-4 mr-2" /> */}
               Search

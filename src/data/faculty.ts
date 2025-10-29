@@ -37,7 +37,7 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/schen.png",
     availability: "Available",
     projects: "8 active",
-    category: "experts",
+    category: "faculty",
   },
   {
     id: 2,
@@ -54,7 +54,7 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/mjohnson.png",
     availability: "Available",
     projects: "5 active",
-    category: "experts",
+    category: "faculty",
   },
   {
     id: 3,
@@ -76,7 +76,7 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/abdul_samad.png",
     availability: "Available",
     projects: "3 active",
-    category: "experts",
+    category: "faculty",
   },
   {
     id: 4,
@@ -94,7 +94,7 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/noah_marston.png",
     availability: "Available",
     projects: "4 active",
-    category: "experts",
+    category: "faculty",
   },
   {
     id: 5,
@@ -112,7 +112,7 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/lindsay_faulkner.png",
     availability: "Available",
     projects: "2 active",
-    category: "experts",
+    category: "faculty",
   },
   {
     id: 6,
@@ -130,7 +130,7 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/ray_glenfield.png",
     availability: "Available",
     projects: "3 active",
-    category: "experts",
+    category: "faculty",
   },
   {
     id: 7,
@@ -148,6 +148,6 @@ export const facultyData: Faculty[] = [
     photo: "/images/faculty/malik_lentil.png",
     availability: "Available",
     projects: "5 active",
-    category: "experts",
+    category: "faculty",
   },
 ];

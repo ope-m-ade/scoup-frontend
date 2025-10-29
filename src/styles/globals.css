@@ -187,3 +187,9 @@
 html {
   font-size: var(--font-size);
 }
+
+@layer base {
+  mark {
+    @apply bg-yellow-200 text-foreground font-medium rounded-sm px-1;
+  }
+}

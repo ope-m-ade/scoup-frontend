@@ -1,7 +1,7 @@
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 // import { Features } from "./components/Features";
-import { SearchDemo } from "./components/SearchDemo";
+import { SearchPage } from "./components/SearchPage";
 // import { CTA } from "./components/CTA";
 import { Footer } from "./components/Footer";
 import { useState } from "react";
@@ -14,6 +14,7 @@ export default function App() {
   const [showFacultyLogin, setShowFacultyLogin] = useState(false);
   const [showSearchDemo, setShowSearchDemo] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleFacultyLogin = () => {
     setShowFacultyLogin(true);
@@ -35,7 +36,12 @@ export default function App() {
   }
 
   if (showSearchDemo) {
-    return <SearchDemo onBack={handleBackToMain} />;
+    return (
+      <SearchPage
+        onBack={handleBackToMain}
+        initialQuery={searchTerm}
+      />
+    );
   }
   if (showAdminLogin) {
     return <AdminLogin onBack={handleBackToMain} />;
@@ -62,12 +68,21 @@ export default function App() {
       />
       <main>
         {showSearchDemo ? (
-          <SearchDemo onBack={() => setShowSearchDemo(false)} />
+          <SearchPage
+            onBack={() => setShowSearchDemo(false)}
+            initialQuery={searchTerm}
+          />
         ) : (
-          <Hero onSearchDemo={() => setShowSearchDemo(true)} />
+          <Hero
+            onSearchDemo={() => setShowSearchDemo(true)}
+            onSearch={(term: string) => {
+              setSearchTerm(term); // save home page input
+              setShowSearchDemo(true); // navigate to search page
+            }}
+          />
         )}
         {/* <Features /> */}
-        {/* <SearchDemo /> */}
+        {/* <SearchPage /> */}
         {/* <CTA onFacultyLogin={handleFacultyLogin} /> */}
       </main>
       <Footer onAboutClick={() => setShowAbout(true)} />

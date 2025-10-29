@@ -1,4 +1,7 @@
 {
+
+      "type": "module",
+      "name": "search-database-landing-page",
       "name": "Search Database Landing Page",
       "version": "0.1.0",
       "private": true,
