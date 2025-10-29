@@ -11,21 +11,45 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Separator } from "./ui/separator";
+codex/implement-changes-in-aarti-scoup-repository-xj4692
+import { Eye, EyeOff, Lock, Mail, ArrowLeft } from "lucide-react";
+
 import { Eye, EyeOff, Lock, Mail, University, ArrowLeft } from "lucide-react";
-import { facultyUsers, adminUsers, User } from "../mockusers";
+Aarti
+import { adminUsers, User } from "../mockusers";
+import { AdminDashboard } from "./AdminDashboard";
 
 interface AdminLoginProps {
   onBack?: () => void;
 }
 
+const initialFormState = {
+  email: "",
+  password: "",
+};
+
 export function AdminLogin({ onBack }: AdminLoginProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState(initialFormState);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loggedInAdmin, setLoggedInAdmin] = useState<User | null>(null);
+
+  if (loggedInAdmin) {
+    return (
+      <AdminDashboard
+        adminName={loggedInAdmin.name}
+        onLogout={() => {
+          setLoggedInAdmin(null);
+          codex/implement-changes-in-aarti-scoup-repository-xj4692
+          setFormData(initialFormState);
+          setFormData({ email: "", password: "" });
+ Aarti
+        }}
+        onBackToHome={onBack}
+      />
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,15 +59,14 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
     // Simulate login process
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const matchedUser = facultyUsers.find(
+      const matchedUser = adminUsers.find(
         (user) =>
           user.email.toLowerCase() === formData.email.toLowerCase() &&
           user.password === formData.password
       );
 
       if (matchedUser) {
-        console.log("Login successful for:", matchedUser.name);
-        // Handle successful login here
+        setLoggedInAdmin(matchedUser);
       } else {
         setError("Invalid email or password.");
       }
@@ -82,9 +105,9 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
                   variant="ghost"
                   size="sm"
                   onClick={onBack}
-                  className="h-8 w-8 p-0"
+                  className="h-8 px-2 gap-2"
                 >
-                  Homepage<ArrowLeft className="h-4 w-4" />
+                  <ArrowLeft className="h-4 w-4" /> Homepage
                 </Button>
               )}
             </div>
@@ -96,7 +119,7 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <Alert variant="destructive">
+                <Alert variant="destructive" role="alert" aria-live="assertive">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
@@ -138,12 +161,13 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                   >
-                    {/* {showPassword ? (
+                    {showPassword ? (
                       <EyeOff className="h-5 w-5 text-muted-foreground" />
                     ) : (
                       <Eye className="h-5 w-5 text-muted-foreground" />
-                    )} */}
+                    )}
                   </Button>
                 </div>
               </div>
