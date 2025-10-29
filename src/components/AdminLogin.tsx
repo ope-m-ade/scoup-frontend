@@ -11,7 +11,11 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Separator } from "./ui/separator";
+codex/implement-changes-in-aarti-scoup-repository-xj4692
 import { Eye, EyeOff, Lock, Mail, ArrowLeft } from "lucide-react";
+
+import { Eye, EyeOff, Lock, Mail, University, ArrowLeft } from "lucide-react";
+Aarti
 import { adminUsers, User } from "../mockusers";
 import { AdminDashboard } from "./AdminDashboard";
 
@@ -37,7 +41,10 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
         adminName={loggedInAdmin.name}
         onLogout={() => {
           setLoggedInAdmin(null);
+          codex/implement-changes-in-aarti-scoup-repository-xj4692
           setFormData(initialFormState);
+          setFormData({ email: "", password: "" });
+ Aarti
         }}
         onBackToHome={onBack}
       />

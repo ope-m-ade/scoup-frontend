@@ -27,6 +27,7 @@ interface AdminDashboardProps {
 }
 
 const navigationLinks = [
+codex/implement-changes-in-aarti-scoup-repository-xj4692
   { label: "Dashboard", icon: LayoutDashboard, href: "#dashboard" },
   { label: "Approvals", icon: CheckCircle2, href: "#approvals" },
   { label: "Faculty", icon: Users2, href: "#faculty" },
@@ -42,6 +43,14 @@ const navigationLinks = [
   },
   { label: "Users & Roles", icon: UserCog, href: "#users" },
   { label: "Settings", icon: Settings, href: "#settings" },
+  { label: "Dashboard", icon: LayoutDashboard },
+  { label: "Approvals", icon: CheckCircle2 },
+  { label: "Faculty", icon: Users2 },
+  { label: "Specializations", icon: GraduationCap },
+  { label: "Publications and Projects", icon: BookOpen },
+  { label: "Users and roles", icon: UserCog },
+  { label: "Settings", icon: Settings },
+        Aarti
 ];
 
 const statHighlights = [
@@ -77,6 +86,7 @@ export function AdminDashboard({
               {adminName ? `Welcome, ${adminName}` : "Administrator"}
             </p>
           </div>
+codex/implement-changes-in-aarti-scoup-repository-xj4692
           <nav
             className="flex-1 px-4 py-6 space-y-2 text-sm"
             aria-label="Admin dashboard sections"
@@ -87,6 +97,14 @@ export function AdminDashboard({
                 href={link.href}
                 className="flex items-center justify-between rounded-md px-3 py-2 transition hover:bg-purple-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-400"
                 >
+          <nav className="flex-1 px-4 py-6 space-y-2 text-sm">
+            {navigationLinks.map((link) => (
+              <a
+                key={link.label}
+                href="#"
+                className="flex items-center justify-between rounded-md px-3 py-2 transition hover:bg-purple-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-400"
+              >
+ Aarti
                 <span className="flex items-center gap-3">
                   <link.icon className="h-4 w-4 text-purple-300" />
                   {link.label}
@@ -110,10 +128,13 @@ export function AdminDashboard({
         </aside>
 
         <main className="flex-1 p-8 space-y-6">
+ codex/implement-changes-in-aarti-scoup-repository-xj4692
           <div
             id="dashboard"
             className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
           >
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+ Aarti
             <div>
               <h1 className="text-3xl font-semibold text-gray-900">
                 Admin Dashboard
@@ -150,11 +171,15 @@ export function AdminDashboard({
             ))}
           </section>
 
+ codex/implement-changes-in-aarti-scoup-repository-xj4692
           <section
             id="approvals"
             className="grid gap-6 lg:grid-cols-2"
           >
             <Card className="border-purple-200 shadow-sm" id="activity">
+          <section className="grid gap-6 lg:grid-cols-2">
+            <Card className="border-purple-200 shadow-sm">
+Aarti
               <CardHeader>
                 <CardTitle>Recent Activity</CardTitle>
                 <CardDescription>
@@ -196,6 +221,7 @@ export function AdminDashboard({
               </CardContent>
             </Card>
           </section>
+codex/implement-changes-in-aarti-scoup-repository-xj4692
 
           <section
             id="faculty"
@@ -353,6 +379,7 @@ export function AdminDashboard({
               </CardContent>
             </Card>
           </section>
+Aarti
         </main>
       </div>
     </div>
