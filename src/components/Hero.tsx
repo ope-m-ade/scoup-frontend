@@ -1,56 +1,14 @@
-import {
-  Search,
-  Zap,
-  Database,
-  Filter,
-  ChevronDown,
-  User,
-  FileText,
-  Award,
-  Lightbulb,
-} from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 import { useState } from "react";
 
 interface HeroProps {
-  onSearchDemo: () => void;
   onSearch: (term: string) => void;
 }
 
-export function Hero({ onSearchDemo, onSearch }: HeroProps) {
+export function Hero({ onSearch }: HeroProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchFilter, setSearchFilter] = useState("all");
-
-  const filterOptions = [
-    {
-      value: "all",
-      label: "All Content",
-      icon: <Database className="w-4 h-4" />,
-    },
-    { value: "faculty", label: "Faculty", icon: <User className="w-4 h-4" /> },
-    {
-      value: "projects",
-      label: "Projects",
-      icon: <Lightbulb className="w-4 h-4" />,
-    },
-    {
-      value: "papers",
-      label: "Papers",
-      icon: <FileText className="w-4 h-4" />,
-    },
-    { value: "patents", label: "Patents", icon: <Award className="w-4 h-4" /> },
-  ];
-
-  const getSelectedFilter = () =>
-    filterOptions.find((option) => option.value === searchFilter) ||
-    filterOptions[0];
 
   const submitSearch = () => {
     const trimmedQuery = searchQuery.trim();
@@ -58,7 +16,6 @@ export function Hero({ onSearchDemo, onSearch }: HeroProps) {
       return;
     }
     onSearch(trimmedQuery);
-    onSearchDemo();
   };
 
   return (
@@ -124,36 +81,6 @@ export function Hero({ onSearchDemo, onSearch }: HeroProps) {
               className="pl-12 pr-48 py-4 text-lg bg-card/50 backdrop-blur-sm border-border/50"
             />
 
-            {/* Filter Dropdown
-            <div className="absolute right-24 top-1/2 transform -translate-y-1/2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 bg-card/80 backdrop-blur-sm border-border/50"
-                  >
-                    {getSelectedFilter().icon}
-                    <span className="ml-1 mr-1 text-xs">
-                      {getSelectedFilter().label}
-                    </span>
-                    <ChevronDown className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
-                  {filterOptions.map((option) => (
-                    <DropdownMenuItem
-                      key={option.value}
-                      onClick={() => setSearchFilter(option.value)}
-                      className="flex items-center gap-2"
-                    >
-                      {option.icon}
-                      <span>{option.label}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div> */}
 
             <Button
               className="absolute right-2 top-1/2 transform -translate-y-1/2"

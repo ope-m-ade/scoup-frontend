@@ -12,7 +12,7 @@ import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Separator } from "./ui/separator";
 
-import { Eye, EyeOff, Lock, Mail, University, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, ArrowLeft } from "lucide-react";
 import { adminUsers, User } from "../mockusers";
 import { AdminDashboard } from "./AdminDashboard";
 
@@ -146,7 +146,7 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
                     onChange={(e) =>
                       handleInputChange("password", e.target.value)
                     }
-                    className="pl-12"
+                    className="pl-12 pr-12"
                     required
                   />
                   <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -154,7 +154,7 @@ export function AdminLogin({ onBack }: AdminLoginProps) {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    className="absolute inset-y-0 right-0 flex items-center px-3 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >

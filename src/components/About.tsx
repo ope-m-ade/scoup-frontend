@@ -4,14 +4,12 @@ import { CTA } from "./CTA";
 import { Button } from "./ui/button";
 
 interface AboutProps {
-  onBack?: () => void;
   onFacultyLogin?: () => void;
   onAdminLogin?: () => void;
   onHome?: () => void;
 }
 
 export function About({
-  onBack,
   onFacultyLogin,
   onAdminLogin,
   onHome,

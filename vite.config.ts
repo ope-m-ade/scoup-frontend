@@ -4,6 +4,7 @@
   import path from 'path';
 
   export default defineConfig({
+    cacheDir: path.resolve(__dirname, ".vite-cache"),
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],

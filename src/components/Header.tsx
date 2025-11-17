@@ -91,7 +91,7 @@ export function Header({ onFacultyLogin, onAdminLogin, onAboutClick }: HeaderPro
               </a> */}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
                 <Button onClick={onFacultyLogin}>Faculty Sign In</Button>
-                <Button>Administrato Sign In</Button>
+                <Button onClick={onAdminLogin}>Administrator Sign In</Button>
               </div>
             </nav>
           </div>

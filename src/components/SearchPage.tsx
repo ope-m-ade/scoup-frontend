@@ -1,152 +1,184 @@
-import { useEffect, useState } from "react";
-import {
-  Search,
-  User,
-  Lightbulb,
-  FileText,
-  Award,
-  Database,
-} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Search } from "lucide-react";
 import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { facultyData } from "../data/faculty";
-import papersData from "../data/papersData.json";
-// Uncomment when you have data ready:
-// import { projectsData } from "../data/projects";
-// import { patentsData } from "../data/patents";
 
-interface FacultyResult {
-  id: string | number;
-  category: "faculty";
-  name: string;
-  title?: string;
+type FacultyResult = {
+  id: number;
+  first_name: string;
+  last_name: string;
   department?: string;
+  title?: string;
   email?: string;
-  office?: string;
-  phone?: string;
-  description?: string;
-  aiKeywords?: string[];
-  facultyKeywords?: string[];
+  bio?: string;
   photo?: string;
-}
-
-interface PaperResult {
-  id: string | number;
-  category: "papers";
-  title: string;
-  abstract?: string;
-  authors?: string[];
-  journal?: string;
-  datePublished?: string;
-  aiKeywords?: string[];
-  facultyKeywords?: string[];
-  downloadUrl?: string;
-}
-
-interface ProjectResult {
-  id: string | number;
-  category: "projects";
-  title: string;
-  description?: string;
-  leadFaculty?: string;
-  collaborators?: string[];
-  aiKeywords?: string[];
-  facultyKeywords?: string[];
-}
-
-interface PatentResult {
-  id: string | number;
-  category: "patents";
-  title: string;
-  description?: string;
-  inventors?: string[];
-  patentNumber?: string;
-  year?: string;
-  aiKeywords?: string[];
-  facultyKeywords?: string[];
-}
-
-type SearchResult = FacultyResult | PaperResult | ProjectResult | PatentResult;
-
-interface SearchPageProps {
-  initialQuery?: string;
-  onBack?: () => void;
-}
-
-const highlightMatch = (text: string | undefined, query: string): string => {
-  if (!text) return "";
-  const trimmedQuery = query.trim();
-  if (!trimmedQuery) return text;
-
-  try {
-    const regex = new RegExp(
-      `(${trimmedQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
-      "gi"
-    );
-    return text.replace(
-      regex,
-      '<mark class="bg-yellow-200 font-medium rounded-sm px-1">$1</mark>'
-    );
-  } catch {
-    return text;
-  }
 };
 
-export function SearchPage({ initialQuery, onBack }: SearchPageProps) {
-  const [activeQuery, setActiveQuery] = useState(initialQuery || "");
-  const [submittedQuery, setSubmittedQuery] = useState(initialQuery || "");
-  const [activeTab, setActiveTab] = useState("all");
+type PaperResult = {
+  id: number;
+  title: string;
+  abstract?: string;
+  journal?: string;
+  date_published?: string;
+};
 
-  const currentQuery = (submittedQuery || activeQuery).trim().toLowerCase();
+type SearchResult =
+  | (FacultyResult & { category: "faculty" })
+  | (PaperResult & { category: "papers" });
 
-  const allResults: SearchResult[] = [
-    ...facultyData.map((f) => ({ ...f, category: "faculty" as const })),
-    ...papersData.map((p) => ({ ...p, category: "papers" as const })),
-    // ...projectsData.map((p) => ({ ...p, category: "projects" as const })),
-    // ...patentsData.map((p) => ({ ...p, category: "patents" as const })),
-  ];
+const DEFAULT_API_BASE = "http://127.0.0.1:8000/api";
+const API_BASE_URL = (
+  import.meta.env.VITE_API_URL || DEFAULT_API_BASE
+).replace(/\/$/, "");
 
-  const getFilteredResults = (category: string): SearchResult[] => {
-    if (!currentQuery) return [];
+const buildSearchUrl = (path: string, query: string) => {
+  const queryParam = query ? `?search=${encodeURIComponent(query)}` : "";
+  return `${API_BASE_URL}${path}${queryParam}`;
+};
 
-    let filtered = allResults;
+const highlightMatch = (text: string | undefined, query: string) => {
+  if (!text) {
+    return null;
+  }
+  const trimmedQuery = query.trim();
+  if (!trimmedQuery) {
+    return text;
+  }
+  const escapedQuery = trimmedQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(escapedQuery, "gi");
+  const parts: Array<string | JSX.Element> = [];
+  let lastIndex = 0;
 
-    if (category !== "all") {
-      const tabCategory =
-        category === "experts"
-          ? "faculty"
-          : (category as SearchResult["category"]);
-      filtered = filtered.filter((r) => r.category === tabCategory);
+  for (const match of text.matchAll(regex)) {
+    const startIndex = match.index ?? 0;
+    if (startIndex > lastIndex) {
+      parts.push(text.slice(lastIndex, startIndex));
     }
 
-    return filtered.filter((r) => {
-      const searchableFields = [
-        r.category === "faculty" ? r.name : (r as any).title,
-        r.category === "faculty" ? (r as any).department : (r as any).journal,
-        ...(r.aiKeywords || []),
-        ...(r.facultyKeywords || []),
-        r.category === "faculty"
-          ? (r as any).description
-          : (r as any).abstract || (r as any).description,
-        ...(r.category === "faculty"
-          ? []
-          : (r as any).authors || (r as any).collaborators || []),
-      ];
+    const matchedText = match[0];
+    parts.push(
+      <mark
+        key={`${startIndex}-${matchedText}`}
+        className="bg-yellow-200 font-medium rounded-sm px-1"
+      >
+        {matchedText}
+      </mark>
+    );
 
-      return searchableFields.some(
-        (field) => field && field.toLowerCase().includes(currentQuery)
-      );
-    });
-  };
+    lastIndex = startIndex + matchedText.length;
+  }
+
+  if (parts.length === 0) {
+    return text;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts;
+};
+
+export function SearchPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryParam = (searchParams.get("query") || "").trim();
+
+  const [activeQuery, setActiveQuery] = useState(queryParam);
+  const [submittedQuery, setSubmittedQuery] = useState(queryParam);
+  const [activeTab, setActiveTab] = useState("all");
+
+  const [facultyData, setFacultyData] = useState<FacultyResult[]>([]);
+  const [papersData, setPapersData] = useState<PaperResult[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const normalizedQuery = initialQuery?.trim() ?? "";
-    setActiveQuery(normalizedQuery);
-    setSubmittedQuery(normalizedQuery);
-  }, [initialQuery]);
+    setActiveQuery(queryParam);
+    setSubmittedQuery(queryParam);
+  }, [queryParam]);
+
+  const normalizedQuery = submittedQuery.trim();
+  const loweredQuery = normalizedQuery.toLowerCase();
+
+  // 🧩 Fetch data from backend
+  useEffect(() => {
+    if (!normalizedQuery) {
+      setFacultyData([]);
+      setPapersData([]);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [facultyRes, papersRes] = await Promise.all([
+          fetch(buildSearchUrl("/faculty/", loweredQuery), {
+            signal: controller.signal,
+          }),
+          fetch(buildSearchUrl("/papers/", loweredQuery), {
+            signal: controller.signal,
+          }),
+        ]);
+
+        if (!facultyRes.ok || !papersRes.ok) {
+          throw new Error("Failed to fetch search results");
+        }
+
+        const [faculty, papers] = await Promise.all([
+          facultyRes.json(),
+          papersRes.json(),
+        ]);
+
+        setFacultyData(faculty);
+        setPapersData(papers);
+      } catch (err) {
+        if ((err as Error).name === "AbortError") {
+          return;
+        }
+        console.error("Error fetching data:", err);
+        setError("Unable to load search results. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => controller.abort();
+  }, [loweredQuery, normalizedQuery]);
+
+  const allResults: SearchResult[] = useMemo(
+    () => [
+      ...facultyData.map((f) => ({ ...f, category: "faculty" as const })),
+      ...papersData.map((p) => ({ ...p, category: "papers" as const })),
+    ],
+    [facultyData, papersData]
+  );
+
+  const getFilteredResults = (category: string) => {
+    if (!normalizedQuery) return [];
+    if (category === "all") return allResults;
+    if (category === "experts")
+      return allResults.filter((r) => r.category === "faculty");
+    return allResults.filter((r) => r.category === category);
+  };
+
+  const handleSubmit = () => {
+    const trimmedQuery = activeQuery.trim();
+    setSubmittedQuery(trimmedQuery);
+    setActiveTab("all");
+    if (trimmedQuery) {
+      setSearchParams({ query: trimmedQuery });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   return (
     <section className="py-24 px-4">
@@ -165,7 +197,10 @@ export function SearchPage({ initialQuery, onBack }: SearchPageProps) {
                 value={activeQuery}
                 onChange={(e) => setActiveQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") setSubmittedQuery(activeQuery);
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
                 }}
                 placeholder="Search faculty, papers, projects, or patents..."
                 className="pl-12 pr-36 py-3 bg-card border-border"
@@ -198,240 +233,113 @@ export function SearchPage({ initialQuery, onBack }: SearchPageProps) {
             </TabsList>
 
             <TabsContent value={activeTab} className="mt-4">
-              <div className="space-y-3">
-                {(() => {
-                  const filteredResults = getFilteredResults(activeTab);
+              {loading ? (
+                <p className="text-center text-muted-foreground">
+                  Loading results...
+                </p>
+              ) : error ? (
+                <p className="text-center text-destructive">{error}</p>
+              ) : (
+                <div className="space-y-3">
+                  {(() => {
+                    const filteredResults = getFilteredResults(activeTab);
+                    if (filteredResults.length === 0) {
+                      return normalizedQuery ? (
+                        <p className="text-center text-muted-foreground">
+                          No results found for "{normalizedQuery}".
+                        </p>
+                      ) : (
+                        <p className="text-center text-muted-foreground">
+                          Type a keyword to begin searching.
+                        </p>
+                      );
+                    }
 
-                  if (filteredResults.length === 0) {
-                    return currentQuery ? (
-                      <p className="text-center text-muted-foreground">
-                        No results found for "{currentQuery}".
-                      </p>
-                    ) : (
-                      <p className="text-center text-muted-foreground">
-                        Type a keyword to begin searching.
-                      </p>
-                    );
-                  }
+                    return filteredResults.map((result) => {
+                      // 👩‍🏫 Faculty card
+                      if (result.category === "faculty") {
+                        return (
+                          <Card
+                            key={`faculty-${result.id}`}
+                            className="border p-6"
+                          >
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              <div className="flex justify-center items-start">
+                                <img
+                                  src={
+                                    result.photo ||
+                                    "/images/default-profile.jpg"
+                                  }
+                                  alt={result.first_name}
+                                  className="rounded-lg w-40 h-40 object-cover border border-border/40"
+                                />
+                              </div>
 
-                  return filteredResults.map((result) => {
-                    // 🧑‍🏫 Faculty results
-                    // 🧑‍🏫 Faculty results
-if (result.category === "faculty") {
-  // Filter keywords to only those matching the query
-  const matchedAIKeywords =
-    result.aiKeywords?.filter((kw) =>
-      kw.toLowerCase().includes(currentQuery)
-    ) || [];
+                              <div className="md:col-span-2 space-y-2 text-sm">
+                                <p className="font-semibold text-lg">
+                                  {highlightMatch(
+                                    `${result.first_name} ${result.last_name}`,
+                                    normalizedQuery
+                                  )}
+                                </p>
+                                <p className="text-muted-foreground">
+                                  {result.title && `${result.title}, `}
+                                  {result.department}
+                                </p>
+                                <p>
+                                  <span className="font-medium">Email:</span>{" "}
+                                  {result.email}
+                                </p>
+                                {result.bio && (
+                                  <p>
+                                    {highlightMatch(result.bio, normalizedQuery)}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </Card>
+                        );
+                      }
 
-  const matchedFacultyKeywords =
-    result.facultyKeywords?.filter((kw) =>
-      kw.toLowerCase().includes(currentQuery)
-    ) || [];
+                      // 📄 Paper card
+                      if (result.category === "papers") {
+                        return (
+                          <Card
+                            key={`paper-${result.id}`}
+                            className="p-6 border"
+                          >
+                            <h3 className="font-semibold text-lg">
+                              {highlightMatch(result.title, normalizedQuery)}
+                            </h3>
+                            {result.abstract && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                {highlightMatch(
+                                  result.abstract.slice(0, 250),
+                                  normalizedQuery
+                                )}
+                              </p>
+                            )}
+                            <p className="text-xs text-gray-500 mt-2">
+                              {result.journal && `${result.journal} `}
+                              {result.date_published &&
+                                `• ${result.date_published}`}
+                            </p>
+                          </Card>
+                        );
+                      }
 
-  return (
-    <Card key={`faculty-${result.id}`} className="border border-border/50 p-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Column 1: Filtered Keywords */}
-        <div className="space-y-4">
-          {matchedAIKeywords.length > 0 && (
-            <div>
-              <h4 className="font-semibold text-sm mb-1">
-                AI-matched keywords
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {matchedAIKeywords.map((kw) => (
-                  <Badge key={kw} variant="secondary">
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: highlightMatch(kw, currentQuery),
-                      }}
-                    />
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-          {matchedFacultyKeywords.length > 0 && (
-            <div>
-              <h4 className="font-semibold text-sm mb-1">
-                Faculty-generated keywords
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {matchedFacultyKeywords.map((kw) => (
-                  <Badge key={kw} variant="outline">
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: highlightMatch(kw, currentQuery),
-                      }}
-                    />
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Column 2: Photo */}
-        <div className="flex justify-center items-start">
-          <img
-            src={result.photo || "/images/default-profile.jpg"}
-            alt={result.name}
-            className="rounded-lg w-40 h-40 object-cover border border-border/40"
-          />
-        </div>
-
-        {/* Column 3: Faculty Details */}
-        <div className="space-y-2 text-sm">
-          <p
-            className="font-semibold text-lg"
-            dangerouslySetInnerHTML={{
-              __html: highlightMatch(result.name, currentQuery),
-            }}
-          />
-          {(result.title || result.department) && (
-            <p className="text-muted-foreground">
-              {result.title && (
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: highlightMatch(result.title, currentQuery),
-                  }}
-                />
+                      return null;
+                    });
+                  })()}
+                </div>
               )}
-              {result.title && result.department ? ", " : ""}
-              {result.department && (
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: highlightMatch(result.department, currentQuery),
-                  }}
-                />
-              )}
-            </p>
-          )}
-
-          {result.email && (
-            <p>
-              <span className="font-medium">Email:</span> {result.email}
-            </p>
-          )}
-          {result.office && (
-            <p>
-              <span className="font-medium">Office:</span> {result.office}
-            </p>
-          )}
-          {result.phone && (
-            <p>
-              <span className="font-medium">Phone:</span> {result.phone}
-            </p>
-          )}
-        </div>
-      </div>
-    </Card>
-  );
-}
-
-                    // 📄 Paper results
-                    if (result.category === "papers") {
-                      return (
-                        <Card key={`paper-${result.id}`} className="p-6 border">
-                          <h3
-                            className="font-semibold text-lg"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightMatch(
-                                result.title,
-                                currentQuery
-                              ),
-                            }}
-                          />
-                          <p
-                            className="text-sm text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightMatch(
-                                result.abstract?.slice(0, 200) || "",
-                                currentQuery
-                              ),
-                            }}
-                          />
-                          <p className="text-xs text-gray-500">
-                            {result.journal && <span>{result.journal}</span>}
-                            {result.datePublished &&
-                              ` • ${result.datePublished}`}
-                          </p>
-                        </Card>
-                      );
-                    }
-
-                    // 💡 Project results
-                    if (result.category === "projects") {
-                      return (
-                        <Card
-                          key={`project-${result.id}`}
-                          className="p-6 border"
-                        >
-                          <h3
-                            className="font-semibold text-lg"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightMatch(
-                                result.title,
-                                currentQuery
-                              ),
-                            }}
-                          />
-                          <p
-                            className="text-sm text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightMatch(
-                                result.description || "",
-                                currentQuery
-                              ),
-                            }}
-                          />
-                        </Card>
-                      );
-                    }
-
-                    // 🧾 Patent results
-                    if (result.category === "patents") {
-                      return (
-                        <Card
-                          key={`patent-${result.id}`}
-                          className="p-6 border"
-                        >
-                          <h3
-                            className="font-semibold text-lg"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightMatch(
-                                result.title,
-                                currentQuery
-                              ),
-                            }}
-                          />
-                          <p
-                            className="text-sm text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html: highlightMatch(
-                                result.description || "",
-                                currentQuery
-                              ),
-                            }}
-                          />
-                          <p className="text-xs text-gray-500">
-                            Patent #{result.patentNumber || "N/A"} •{" "}
-                            {result.year || "Year unknown"}
-                          </p>
-                        </Card>
-                      );
-                    }
-
-                    return null;
-                  });
-                })()}
-              </div>
             </TabsContent>
           </Tabs>
 
           <div className="text-center pt-4">
-            <Button variant="outline">View all results</Button>
+            <Button variant="outline" onClick={handleSubmit}>
+              Refresh results
+            </Button>
           </div>
         </div>
       </div>
