@@ -553,7 +553,7 @@ export default function FacultyDashboardOverview() {
               <p className="text-xs uppercase text-muted-foreground">
                 Faculty ID
               </p>
-              <p className="font-medium">{profile.facultyId}</p>
+              <p className="font-small">{profile.facultyId}</p>
             </div>
 
             <div className="pt-2 flex gap-2">

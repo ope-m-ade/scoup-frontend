@@ -141,7 +141,7 @@ function FacultyLogin({ onNavigate, onBack }: FacultyLoginProps) {
                 />
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 text-muted-foreground" />
 
-                <Button
+                {/* <Button
                   type="button"
                   variant="ghost"
                   className="absolute right-0 inset-y-0"
@@ -152,7 +152,7 @@ function FacultyLogin({ onNavigate, onBack }: FacultyLoginProps) {
                   ) : (
                     <Eye className="h-5" />
                   )}
-                </Button>
+                </Button> */}
               </div>
             </div>
 
