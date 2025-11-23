@@ -297,7 +297,7 @@ export default function FacultyProfilePage() {
         </div>
       </header>
 
-      <Card>
+      {/* <Card>
         <CardHeader className="grid gap-2 sm:flex sm:items-center sm:justify-between">
           <div>
             <CardTitle className="text-base font-semibold text-muted-foreground">
@@ -328,7 +328,7 @@ export default function FacultyProfilePage() {
             </div>
           </div>
         </CardHeader>
-      </Card>
+      </Card> */}
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
