@@ -26,6 +26,7 @@ interface Profile {
   totalCitations: number;
   articleCount: number;
   avgCitations: number;
+  photo?: string | null;
 }
 
 interface PaperItem {
@@ -191,6 +192,7 @@ export default function FacultyDashboardOverview() {
         totalCitations: data.total_citations ?? 0,
         articleCount: data.article_count ?? 0,
         avgCitations: data.average_citations ?? 0,
+        photo: data.photo || null,
       });
       setError("");
     } catch (err) {

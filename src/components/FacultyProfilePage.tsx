@@ -14,8 +14,12 @@ import { Badge } from "./ui/badge";
 import { Alert, AlertDescription } from "./ui/alert";
 import { FileUp, PenLine, Plus, FileText } from "lucide-react";
 
+// Force API base to include /api to match Django include
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+  (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(
+    /\/+$/,
+    ""
+  );
 
 interface FacultyProfile {
   id?: number;
@@ -32,6 +36,7 @@ interface FacultyProfile {
   totalCitations: number;
   articleCount: number;
   avgCitations: number;
+  photo: string | null;
 }
 
 const defaultProfile: FacultyProfile = {
@@ -48,6 +53,7 @@ const defaultProfile: FacultyProfile = {
   totalCitations: 0,
   articleCount: 0,
   avgCitations: 0,
+  photo: null,
 };
 
 const defaultKeywords: string[] = [];
@@ -67,6 +73,7 @@ const mapApiToProfile = (data: any): FacultyProfile => ({
   totalCitations: data.total_citations ?? 0,
   articleCount: data.article_count ?? 0,
   avgCitations: data.average_citations ?? 0,
+  photo: data.photo ?? null,
 });
 
 const keywordsFromText = (value?: string | null) =>
@@ -146,6 +153,8 @@ export default function FacultyProfilePage() {
   const [newKeyword, setNewKeyword] = useState("");
   const [documents, setDocuments] = useState<File[]>([]);
   const [uploadError, setUploadError] = useState("");
+  const [uploadMessage, setUploadMessage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -242,7 +251,9 @@ export default function FacultyProfilePage() {
     setNewKeyword("");
   };
 
-  const handleDocumentUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDocumentUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const files = event.target.files ? Array.from(event.target.files) : [];
     if (!files.length) return;
     const pdfs = files.filter((file) => file.type === "application/pdf");
@@ -250,9 +261,54 @@ export default function FacultyProfilePage() {
       setUploadError("Only PDF files are supported for now.");
       return;
     }
+    const token = localStorage.getItem("facultyAccessToken");
+    if (!token) {
+      setUploadError("Missing access token. Please log in again.");
+      return;
+    }
+
     setUploadError("");
+    setUploadMessage("");
+    setUploading(true);
     setDocuments((prev) => [...prev, ...pdfs]);
     event.target.value = "";
+
+    const formData = new FormData();
+    formData.append("file", pdfs[0]);
+
+    try {
+      const uploadUrl = `${API_BASE_URL}/faculty/upload-cv-papers/`;
+      console.debug("Uploading CV to:", uploadUrl);
+      const response = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      const raw = await response.text();
+      let data: any = {};
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch {
+        data = { detail: raw };
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data?.detail || data?.error || `Upload failed (status ${response.status}).`,
+        );
+      }
+      setUploadMessage(
+        data?.message || "Upload complete. Papers will appear shortly.",
+      );
+    } catch (err) {
+      setUploadError(
+        err instanceof Error ? err.message : "Unexpected error uploading PDF.",
+      );
+    } finally {
+      setUploading(false);
+      setTimeout(() => setUploadMessage(""), 4000);
+    }
   };
 
   return (
@@ -267,6 +323,11 @@ export default function FacultyProfilePage() {
         {profileError && (
           <Alert variant="destructive">
             <AlertDescription>{profileError}</AlertDescription>
+          </Alert>
+        )}
+        {uploadMessage && (
+          <Alert>
+            <AlertDescription>{uploadMessage}</AlertDescription>
           </Alert>
         )}
         {saveMessage && (
@@ -483,24 +544,26 @@ export default function FacultyProfilePage() {
               </Alert>
             )}
 
-            <div className="space-y-2">
-              {documents.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center">
-                  No uploads yet.
-                </p>
-              ) : (
-                documents.map((doc) => (
-                  <div
-                    key={doc.name + doc.lastModified}
-                    className="flex items-center gap-3 rounded-md border p-2 text-sm"
-                  >
-                    <FileText className="h-4 w-4 text-muted-foreground" />
-                    <div className="flex-1 truncate">{doc.name}</div>
-                    <Badge variant="secondary">Queued</Badge>
-                  </div>
-                ))
-              )}
-            </div>
+          <div className="space-y-2">
+            {documents.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center">
+                No uploads yet.
+              </p>
+            ) : (
+              documents.map((doc) => (
+                <div
+                  key={doc.name + doc.lastModified}
+                  className="flex items-center gap-3 rounded-md border p-2 text-sm"
+                >
+                  <FileText className="h-4 w-4 text-muted-foreground" />
+                  <div className="flex-1 truncate">{doc.name}</div>
+                  <Badge variant="secondary">
+                    {uploading ? "Uploading..." : "Queued"}
+                  </Badge>
+                </div>
+              ))
+            )}
+          </div>
           </CardContent>
         </Card>
       </section>

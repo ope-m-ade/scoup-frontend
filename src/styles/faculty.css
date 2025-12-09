@@ -1,0 +1,95 @@
+/* layout */
+.faculty-sidebar {
+  width: 20%;
+  min-width: 260px;
+  max-width: 420px;
+}
+
+.faculty-brand {
+  font-size: 2rem;     
+  font-weight: 600;      
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  color: var(--foreground);
+}
+
+/* navigation items */
+/* Base nav item */
+.faculty-nav-item {
+  display: inline-block; 
+  width: 180px; 
+  padding: 1px 18px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.faculty-nav-active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.faculty-nav-item:not(.faculty-nav-active):hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: black;
+}
+
+.faculty-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; 
+}
+.sidebar-avatar {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 12px;
+}
+
+.sidebar-avatar-img,
+.sidebar-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #d1d5db; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.sidebar-avatar-edit {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: #059669; 
+  color: white;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.submit-btn {
+  background-color: #000 !important;
+  color: white !important;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+}
+.submit-btn:hover {
+  background-color: #222 !important;
+}

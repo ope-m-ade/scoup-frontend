@@ -12,10 +12,14 @@ import FacultyLoginSuccess from "./components/FacultyLoginSuccess";
 import FacultyLayout from "./components/FacultyLayout";
 import FacultyDashboardOverview from "./components/FacultyDashboardOverview";
 import FacultyProfilePage from "./components/FacultyProfilePage";
-import FacultyPapersPage from "./components/FacultyPapersPage";
-import FacultyProjectsPage from "./components/FacultyProjectsPage";
-import FacultyPatentsPage from "./components/FacultyPatentsPage";
 import FacultyUploadsPage from "./components/FacultyUploadsPage";
+import PapersPage from "./components/faculty/papers/PapersPage";
+import EditPaperForm from "./components/faculty/papers/EditPaperForm";
+import ProjectsPage from "./components/faculty/projects/ProjectsPage";
+import EditProjectForm from "./components/faculty/projects/EditProjectForm";
+import PatentsPage from "./components/faculty/patents/PatentsPage";
+import EditPatentForm from "./components/faculty/patents/EditPatentForm";
+import "./styles/faculty.css";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -75,9 +79,21 @@ export default function App() {
         <Route index element={<FacultyDashboardOverview />} />
         <Route path="dashboard" element={<FacultyDashboardOverview />} />
         <Route path="profile" element={<FacultyProfilePage />} />
-        <Route path="papers" element={<FacultyPapersPage />} />
-        <Route path="projects" element={<FacultyProjectsPage />} />
-        <Route path="patents" element={<FacultyPatentsPage />} />
+        <Route path="papers">
+          <Route index element={<PapersPage />} />
+          <Route path="new" element={<EditPaperForm />} />
+          <Route path=":id/edit" element={<EditPaperForm />} />
+        </Route>
+        <Route path="projects">
+          <Route index element={<ProjectsPage />} />
+          <Route path="new" element={<EditProjectForm />} />
+          <Route path=":id/edit" element={<EditProjectForm />} />
+        </Route>
+        <Route path="patents">
+          <Route index element={<PatentsPage />} />
+          <Route path="new" element={<EditPatentForm />} />
+          <Route path=":id/edit" element={<EditPatentForm />} />
+        </Route>
         <Route path="uploads" element={<FacultyUploadsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
